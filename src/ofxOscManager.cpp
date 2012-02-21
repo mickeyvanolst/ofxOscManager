@@ -5,10 +5,10 @@
 //  Created by Mick van Olst on 11-11-11.
 //  Copyright (c) 2011 POPSURE. All rights reserved.
 //
-#include "networkManager.h"
+#include "ofxOscManager.h"
 
 //--------------------------------------------------------------
-manageNetwork::manageNetwork()
+oscMangager::oscMangager()
 {
     serverExists        = false;
     initOnce            = false;
@@ -26,7 +26,7 @@ manageNetwork::manageNetwork()
 }
 
 //--------------------------------------------------------------
-void manageNetwork::update()
+void oscMangager::update()
 {
     hasMessages = false;
     
@@ -213,7 +213,7 @@ void manageNetwork::update()
 }
 
 //--------------------------------------------------------------
-void manageNetwork::setup(string serverIp, int portIn, int portOut, string myMode)
+void oscMangager::setup(string serverIp, int portIn, int portOut, string myMode)
 {   // setting up client/controller and connecting
     if(myMode != "server")
     {
@@ -259,7 +259,7 @@ void manageNetwork::setup(string serverIp, int portIn, int portOut, string myMod
 }
 
 //--------------------------------------------------------------
-void manageNetwork::addConnection(string remoteIp, string OSCaddress)
+void oscMangager::addConnection(string remoteIp, string OSCaddress)
 {   // add new connection to connections list
     Connection connection;
     
@@ -282,7 +282,7 @@ void manageNetwork::addConnection(string remoteIp, string OSCaddress)
 }
 
 //--------------------------------------------------------------
-void manageNetwork::sendMsg(ofxOscMessage m)
+void oscMangager::sendMsg(ofxOscMessage m)
 {
     if(iamserver && connections.size() > 0)
     {
@@ -307,7 +307,7 @@ void manageNetwork::sendMsg(ofxOscMessage m)
 }
 
 //--------------------------------------------------------------
-void manageNetwork::sendCtrMsg(ofxOscMessage m)
+void oscMangager::sendCtrMsg(ofxOscMessage m)
 {
     if(iamserver && connections.size() > 0)
     {
@@ -332,7 +332,7 @@ void manageNetwork::sendCtrMsg(ofxOscMessage m)
 }
 
 //--------------------------------------------------------------
-void manageNetwork::printDebug(ofxOscMessage m)
+void oscMangager::printDebug(ofxOscMessage m)
 {
     // unrecognized message: display on the bottom of the screen
     string msg_string;
