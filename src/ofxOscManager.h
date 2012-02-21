@@ -1,24 +1,22 @@
 //
-//  manageNetwork.h
+//  ofxOscManager.h
 //  emptyExample
 //
 //  Created by Mick van Olst on 11-11-11.
 //  Copyright (c) 2011 POPSURE. All rights reserved.
 //
 
-#ifndef pyramidPlayer_network_h
-#define pyramidPlayer_network_h
+#ifndef ofx_osc_manager_h
+#define ofx_osc_manager_h
 #include "ofxOsc.h"
 
-//#ifndef PYRAMIDPLAYER_CONSTANTS
-//#define PYRAMIDPLAYER_CONSTANTS
 #define MAX_CONNECTIONS 100 // max aantal senders
-//#endif
 
-class manageNetwork {
+
+class oscMangager {
     
 public: 
-    manageNetwork();
+    oscMangager();
     
     void update();
     void setup(string serverIp, int portIn, int portOut, string myMode);
