@@ -6,17 +6,17 @@
 //  Copyright (c) 2011 POPSURE. All rights reserved.
 //
 
-#ifndef ofx_osc_manager_h
-#define ofx_osc_manager_h
+#pragma once
+
 #include "ofxOsc.h"
 
 #define MAX_CONNECTIONS 100 // max aantal senders
 
 
-class oscMangager {
+class ofxOscManager {
     
 public: 
-    oscMangager();
+    ofxOscManager();
     
     void update();
     void setup(string serverIp, int portIn, int portOut, string myMode);
@@ -75,4 +75,3 @@ private:
     ofxOscSender            reconnectSender[MAX_CONNECTIONS];
     int                     reconnectSenderIndex;
 };
-#endif

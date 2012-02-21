@@ -8,7 +8,7 @@
 #include "ofxOscManager.h"
 
 //--------------------------------------------------------------
-oscMangager::oscMangager()
+ofxOscManager::ofxOscManager()
 {
     serverExists        = false;
     initOnce            = false;
@@ -26,7 +26,7 @@ oscMangager::oscMangager()
 }
 
 //--------------------------------------------------------------
-void oscMangager::update()
+void ofxOscManager::update()
 {
     hasMessages = false;
     
@@ -213,7 +213,7 @@ void oscMangager::update()
 }
 
 //--------------------------------------------------------------
-void oscMangager::setup(string serverIp, int portIn, int portOut, string myMode)
+void ofxOscManager::setup(string serverIp, int portIn, int portOut, string myMode)
 {   // setting up client/controller and connecting
     if(myMode != "server")
     {
@@ -259,7 +259,7 @@ void oscMangager::setup(string serverIp, int portIn, int portOut, string myMode)
 }
 
 //--------------------------------------------------------------
-void oscMangager::addConnection(string remoteIp, string OSCaddress)
+void ofxOscManager::addConnection(string remoteIp, string OSCaddress)
 {   // add new connection to connections list
     Connection connection;
     
@@ -282,7 +282,7 @@ void oscMangager::addConnection(string remoteIp, string OSCaddress)
 }
 
 //--------------------------------------------------------------
-void oscMangager::sendMsg(ofxOscMessage m)
+void ofxOscManager::sendMsg(ofxOscMessage m)
 {
     if(iamserver && connections.size() > 0)
     {
@@ -307,7 +307,7 @@ void oscMangager::sendMsg(ofxOscMessage m)
 }
 
 //--------------------------------------------------------------
-void oscMangager::sendCtrMsg(ofxOscMessage m)
+void ofxOscManager::sendCtrMsg(ofxOscMessage m)
 {
     if(iamserver && connections.size() > 0)
     {
@@ -332,7 +332,7 @@ void oscMangager::sendCtrMsg(ofxOscMessage m)
 }
 
 //--------------------------------------------------------------
-void oscMangager::printDebug(ofxOscMessage m)
+void ofxOscManager::printDebug(ofxOscMessage m)
 {
     // unrecognized message: display on the bottom of the screen
     string msg_string;
