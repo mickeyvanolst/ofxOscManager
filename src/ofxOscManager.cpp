@@ -42,6 +42,7 @@ void ofxOscManager::update()
             ofxOscMessage m;
             receivers[0].getNextMessage( &m );
             
+            
             // check if its a hello message from a client or controller
             if( m.getAddress() == "/client/hello" || m.getAddress() == "/controller/hello" )
             {   
@@ -89,9 +90,11 @@ void ofxOscManager::update()
                 
                 if(!conExists)
                 {   // if the connection is not in the servers database add it and send something back
+
                     
                     addConnection(m.getRemoteIp(), m.getAddress());
                     printf("remote ip: %s\n",m.getRemoteIp().c_str());
+                    
                     
                     // send back what port is gonna be used for talking
                     ofxOscMessage m;
@@ -111,8 +114,10 @@ void ofxOscManager::update()
             }
             else 
             {
+                //cout << "c" << endl;
+                //printDebug(m);
+                listener->receivedOsc(m);
                 
-                printDebug(m);
                 msg = m;
                 hasMessages = true;
             }
@@ -127,9 +132,11 @@ void ofxOscManager::update()
                 ofxOscMessage m;
                 receivers[i].getNextMessage( &m );
                 
+                //
+                
                 if(connections[i].type != "controller")
                 {
-                    printDebug(m);
+                    //printDebug(m);
                     msg = m;
                     hasMessages = true;
                 }
@@ -167,12 +174,13 @@ void ofxOscManager::update()
             
         }
         
+        
         // check if the helloReceiver has any messages back from server
-        while( helloReceiver.hasWaitingMessages() )
+        while(helloReceiver && helloReceiver->hasWaitingMessages() )
         {
             // get the next message
             ofxOscMessage m;
-            helloReceiver.getNextMessage( &m );
+            helloReceiver->getNextMessage( &m );
             
             if ( m.getAddress() == "/server/hello" )
             {
@@ -182,9 +190,14 @@ void ofxOscManager::update()
                 steadyPortIn        = m.getArgAsInt32(0);
                 steadyPortOut       = m.getArgAsInt32(1);
                 serverIp            = m.getRemoteIp();
+                
+                delete helloReceiver;
             }
             
+            cout << "b" << endl;
             printDebug(m);
+            
+
         }
     }
     
@@ -204,7 +217,9 @@ void ofxOscManager::update()
             ofxOscMessage m;
             steadyReceiver.getNextMessage( &m );
             
+            cout << "a" << endl;
             printDebug(m);
+            //listener->receivedOsc(m);
             
             msg = m;
             hasMessages = true;
@@ -215,12 +230,21 @@ void ofxOscManager::update()
 //--------------------------------------------------------------
 void ofxOscManager::setup(string serverIp, int portIn, int portOut, string myMode)
 {   // setting up client/controller and connecting
-    if(myMode != "server")
+    if(myMode != "server") //client
     {
         if(!connectedToServer) 
         {   
+            
+            helloReceiver = new ofxOscReceiver();
+            
             helloSender.setup(serverIp, portIn); //serverPortIn refers to the server
-            helloReceiver.setup(portOut);
+
+            cout << "leef nog A: " << portOut << endl;
+            
+            helloReceiver->setup(portOut);
+
+            cout << "leef nog B" << endl;
+
             printf("connecting to server\n");
             printf("helloSender hostname: %s port: %i\n",serverIp.c_str(),portIn);
             printf("helloReceiver portOut: %i\n",portOut);
@@ -332,7 +356,7 @@ void ofxOscManager::sendCtrMsg(ofxOscMessage m)
 }
 
 //--------------------------------------------------------------
-void ofxOscManager::printDebug(ofxOscMessage m)
+void ofxOscManager::printDebug(ofxOscMessage &m)
 {
     // unrecognized message: display on the bottom of the screen
     string msg_string;

@@ -1,3 +1,5 @@
 ofxOscManager is an openFrameworks addon that allows the creation of a network of multiple clients via OSC.
 
 companje joined the project
+
+move or copy the oscManagerExample to the addonsExamples folder or change the projectfiles.

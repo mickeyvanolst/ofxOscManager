@@ -12,6 +12,12 @@
 
 #define MAX_CONNECTIONS 100 // max aantal senders
 
+class ofxOscListener {
+public:
+    
+    virtual void receivedOsc(ofxOscMessage &m) = 0;
+    
+};
 
 class ofxOscManager {
     
@@ -33,10 +39,11 @@ public:
     int                     serverPortOut;
     
     ofxOscMessage           msg;
+
+    static void printDebug(ofxOscMessage &m);
     
 private:
     void addConnection(string remoteIp, string OSCaddress);
-    void printDebug(ofxOscMessage m);
     
     bool                    iamserver;
     bool                    serverExists;
@@ -51,11 +58,12 @@ private:
     string                  oscAddress;
     
     ofxOscSender            helloSender;
-    ofxOscReceiver          helloReceiver;
+    ofxOscReceiver          *helloReceiver;
     
     ofxOscReceiver          steadyReceiver;
     ofxOscSender            steadySender;
     
+    int tmpServerPortAccepting;
     int                     steadyPortIn;
     int                     steadyPortOut;
     
@@ -74,4 +82,25 @@ private:
     
     ofxOscSender            reconnectSender[MAX_CONNECTIONS];
     int                     reconnectSenderIndex;
+
+protected:
+    ofxOscListener *listener; //in manager
 };
+
+class ofxOscServer : public ofxOscManager {
+public:
+    void setup(ofxOscListener *listener, int serverPort=7000, int clientPort=9000) {
+        ofxOscManager::setup("localhost",serverPort,clientPort,"server");
+        this->listener = listener;
+    }
+};
+
+class ofxOscClient : public ofxOscManager {
+public:
+    void setup(ofxOscListener *listener, string serverIp="localhost", int serverPort=7000, int clientPort=9000) {
+        ofxOscManager::setup(serverIp,serverPort,clientPort,"client");
+        this->listener = listener;
+    }
+};
+
+
